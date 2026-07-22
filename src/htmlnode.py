@@ -23,7 +23,7 @@ class HTMLNode:
         return html_attribute
 
     def __repr__(self) -> str:
-        return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
+        return f"HTMLNode({self.tag}, {self.value}, children: {self.children}, {self.props})"
 
 class LeafNode(HTMLNode):
     def __init__(
@@ -39,7 +39,26 @@ class LeafNode(HTMLNode):
             raise ValueError("Invalid HTML: should have value")
         if not self.tag:
             return self.value
-        return f"<{self.tag}>{self.value}</{self.tag}>"
+        return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
 
     def __repr__(self) -> str:
         return f"LeafNode({self.tag}, {self.value}, {self.props})"
+
+class ParentNode(HTMLNode):
+    def __init__(
+            self,
+            tag: str,
+            children: list[HTMLNode],
+            props: dict[str, str] | None = None
+    ):
+        super().__init__(tag, None, children, props)
+
+    def to_html(self) -> str:
+        if not self.tag:
+            raise ValueError("Invalid HTML: parent must have a tag")
+        if not self.children:
+            raise ValueError("Invalid HTML: parent must have children")
+        return f'<{self.tag}{self.props_to_html()}>{"".join([child.to_html() for child in self.children])}</{self.tag}>'
+
+    def __repr__(self) -> str:
+        return f"ParentNode({self.tag}, children: {self.children}, {self.props})"
