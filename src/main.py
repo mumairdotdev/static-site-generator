@@ -5,7 +5,7 @@ from copystatic import copy_static_files_r
 from genpage import generate_pages_recursive
 
 if sys.argv:
-    basepath = sys.argv[0]
+    basepath = sys.argv[1]
 else:
     basepath = "/"
 
