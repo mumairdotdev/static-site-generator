@@ -1,10 +1,16 @@
 import os
 import shutil
+import sys
 from copystatic import copy_static_files_r
 from genpage import generate_pages_recursive
 
+if sys.argv:
+    basepath = sys.argv[0]
+else:
+    basepath = "/"
+
 dir_path_static = "./static"
-dir_path_public = "./public"
+dir_path_public = "./docs"
 dir_path_content = "./content"
 template_path = "./template.html"
 
@@ -20,7 +26,8 @@ def main():
     generate_pages_recursive(
         dir_path_content, 
         template_path, 
-        dir_path_public
+        dir_path_public,
+        basepath
     )
 
 main()
