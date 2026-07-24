@@ -1,8 +1,17 @@
-from textnode import TextNode, TextType
+import os
+import shutil
+from copystatic import copy_static_files_r
 
+src_dir = "./static"
+dst_public = "./public"
 
 def main():
-    text_node = TextNode("This is some anchor text", TextType.LINK, "https://www.mumair.dev")
-    print(text_node)
+
+    print("Deleting existing public directory...")
+    if os.path.exists(dst_public):
+        shutil.rmtree(dst_public)
+
+    print("Copying static files...")
+    copy_static_files_r(src_dir, dst_public)
 
 main()
